@@ -9,6 +9,7 @@ function StudioCard({ studio }) {
     name,
     thumbnailUrl,
     city,
+    district,
     shootingTypes,
     minPrice,
     rating,
@@ -35,7 +36,7 @@ function StudioCard({ studio }) {
         {/* Location */}
         <div className="flex items-center text-gray-500 text-sm mb-2">
           <FiMapPin className="w-4 h-4 mr-1" />
-          <span>{city}</span>
+          <span>{city}{district ? ` ${district}` : ''}</span>
         </div>
 
         {/* Shooting Types */}

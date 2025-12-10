@@ -19,6 +19,7 @@ public class StudioResponse {
     private String name;
     private String thumbnailUrl;
     private String city;
+    private String district;
     private List<String> shootingTypes;
     private Integer minPrice;
     private Integer maxPrice;
@@ -32,6 +33,7 @@ public class StudioResponse {
                 .name(profile.getName())
                 .thumbnailUrl(profile.getThumbnailUrl())
                 .city(profile.getCity())
+                .district(profile.getDistrict())
                 .shootingTypes(profile.getShootingTypes().stream()
                         .map(Enum::name)
                         .toList())

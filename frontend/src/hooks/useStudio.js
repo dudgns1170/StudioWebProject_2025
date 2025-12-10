@@ -2,12 +2,13 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { studioApi } from '../api/studio.api'
 import { useFilterStore } from '../store/filterStore'
 
-export const useStudios = () => {
+export const useStudios = (customParams = null) => {
   const getQueryParams = useFilterStore((state) => state.getQueryParams)
+  const params = customParams || getQueryParams()
 
   return useQuery({
-    queryKey: ['studios', getQueryParams()],
-    queryFn: () => studioApi.getStudios(getQueryParams()),
+    queryKey: ['studios', params],
+    queryFn: () => studioApi.getStudios(params),
   })
 }
 

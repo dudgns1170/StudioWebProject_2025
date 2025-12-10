@@ -14,6 +14,11 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: never  # DataInitializer 사용
 
 aws:
   s3:

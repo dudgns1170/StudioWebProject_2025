@@ -47,6 +47,14 @@ public class AuthController {
         return ResponseEntity.ok(ApiResponse.success(null, "회원가입이 완료되었습니다. 관리자 승인 후 이용 가능합니다."));
     }
 
+    @Operation(summary = "통합 로그인 (자동 구분)")
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<Object>> login(
+            @Valid @RequestBody LoginRequest request) {
+        Object response = authService.login(request);
+        return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
     @Operation(summary = "일반 회원 로그인")
     @PostMapping("/login/user")
     public ResponseEntity<ApiResponse<LoginResponse>> loginUser(

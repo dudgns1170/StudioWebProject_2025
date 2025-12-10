@@ -36,7 +36,9 @@ public class StudioProfile extends BaseTimeEntity {
     private String address;  // 상세 주소
 
     @Column(nullable = false)
-    private String city;  // 경기도 시/구 (수원시, 성남시 등)
+    private String city;  // 경기도 시 (수원시, 성남시 등)
+
+    private String district;  // 구/동 (팔달구, 분당구 등)
 
     @Column(columnDefinition = "TEXT")
     private String description;  // 스튜디오 소개
@@ -75,12 +77,13 @@ public class StudioProfile extends BaseTimeEntity {
         COMMERCIAL      // 상업/제품
     }
 
-    public void update(String name, String address, String city, String description,
+    public void update(String name, String address, String city, String district, String description,
                        List<ShootingType> shootingTypes, Integer minPrice, Integer maxPrice,
                        String operatingHours) {
         this.name = name;
         this.address = address;
         this.city = city;
+        this.district = district;
         this.description = description;
         this.shootingTypes = shootingTypes;
         this.minPrice = minPrice;

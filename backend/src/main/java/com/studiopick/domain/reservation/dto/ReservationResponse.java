@@ -15,6 +15,7 @@ public class ReservationResponse {
     private StudioInfo studio;
     private UserInfo user;
     private LocalDate preferredDate;
+    private String preferredTime;
     private String shootingType;
     private String options;
     private String message;
@@ -53,6 +54,7 @@ public class ReservationResponse {
                         .phone(reservation.getUser().getPhone())
                         .build())
                 .preferredDate(reservation.getPreferredDate())
+                .preferredTime(reservation.getPreferredTime())
                 .shootingType(reservation.getShootingType() != null
                         ? reservation.getShootingType().name() : null)
                 .options(reservation.getOptions())

@@ -30,6 +30,25 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
 
     /**
+     * 통합 로그인 - 이메일로 User/Studio 자동 구분
+     */
+    public Object login(LoginRequest request) {
+        // 먼저 일반 회원에서 찾기
+        Optional<User> userOpt = userRepository.findByEmail(request.getEmail());
+        if (userOpt.isPresent()) {
+            return loginUser(request);
+        }
+
+        // 기업 회원에서 찾기
+        Optional<Studio> studioOpt = studioRepository.findByEmail(request.getEmail());
+        if (studioOpt.isPresent()) {
+            return loginStudio(request);
+        }
+
+        throw new BusinessException(ErrorCode.INVALID_CREDENTIALS);
+    }
+
+    /**
      * 일반 회원 로그인
      */
     public LoginResponse loginUser(LoginRequest request) {

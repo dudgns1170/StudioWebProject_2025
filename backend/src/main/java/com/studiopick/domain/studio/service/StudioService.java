@@ -54,12 +54,13 @@ public class StudioService {
     public Page<StudioResponse> getStudios(String city, String shootingType,
                                            Integer minPrice, Integer maxPrice, Pageable pageable) {
         Page<StudioProfile> profiles;
+        Studio.StudioStatus approvedStatus = Studio.StudioStatus.APPROVED;
 
         if (shootingType != null && !shootingType.isEmpty()) {
             StudioProfile.ShootingType type = StudioProfile.ShootingType.valueOf(shootingType);
-            profiles = profileRepository.findByFiltersWithShootingType(city, type, minPrice, maxPrice, pageable);
+            profiles = profileRepository.findByFiltersWithShootingType(approvedStatus, city, type, minPrice, maxPrice, pageable);
         } else {
-            profiles = profileRepository.findByFilters(city, minPrice, maxPrice, pageable);
+            profiles = profileRepository.findByFilters(approvedStatus, city, minPrice, maxPrice, pageable);
         }
 
         return profiles.map(StudioResponse::from);
@@ -109,6 +110,7 @@ public class StudioService {
                 .name(request.getName())
                 .address(request.getAddress())
                 .city(request.getCity())
+                .district(request.getDistrict())
                 .description(request.getDescription())
                 .shootingTypes(request.getShootingTypes())
                 .minPrice(request.getMinPrice())
@@ -134,6 +136,7 @@ public class StudioService {
                 request.getName(),
                 request.getAddress(),
                 request.getCity(),
+                request.getDistrict(),
                 request.getDescription(),
                 request.getShootingTypes(),
                 request.getMinPrice(),

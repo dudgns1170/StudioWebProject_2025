@@ -45,6 +45,7 @@ public class ReservationService {
                 .user(user)
                 .studio(studio)
                 .preferredDate(request.getPreferredDate())
+                .preferredTime(request.getPreferredTime())
                 .shootingType(request.getShootingType())
                 .options(request.getOptions())
                 .message(request.getMessage())

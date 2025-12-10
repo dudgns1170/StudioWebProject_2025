@@ -13,7 +13,7 @@ import {
   isToday,
   isBefore,
 } from 'date-fns'
-import { ko } from 'date-fns/locale'
+import ko from 'date-fns/locale/ko'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 
 function DatePicker({ selected, onChange, disabledDates = [] }) {

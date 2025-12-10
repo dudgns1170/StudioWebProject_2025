@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useStudio, usePortfolios } from '../hooks/useStudio'
+import { useStudioReviews } from '../hooks/useReview'
 import { useAuthStore } from '../store/authStore'
 import StudioInfo from '../components/studio/StudioInfo'
 import PortfolioGallery from '../components/studio/PortfolioGallery'
@@ -15,9 +16,11 @@ function StudioDetailPage() {
 
   const { data: studioData, isLoading: studioLoading } = useStudio(studioId)
   const { data: portfolioData } = usePortfolios(studioId)
+  const { data: reviewsData, isLoading: reviewsLoading } = useStudioReviews(studioId)
 
   const studio = studioData?.data
   const portfolios = portfolioData?.data || []
+  const reviews = reviewsData?.data || []
 
   if (studioLoading) {
     return <Loading fullScreen />
@@ -33,8 +36,8 @@ function StudioDetailPage() {
 
   const tabs = [
     { id: 'info', label: '정보' },
-    { id: 'portfolio', label: '포트폴리오' },
-    { id: 'reviews', label: `후기 (${studio.reviewCount || 0})` },
+    { id: 'portfolio', label: `포트폴리오 (${portfolios.length})` },
+    { id: 'reviews', label: `후기 (${reviews.length})` },
   ]
 
   return (
@@ -75,8 +78,12 @@ function StudioDetailPage() {
           {activeTab === 'portfolio' && <PortfolioGallery portfolios={portfolios} />}
           {activeTab === 'reviews' && (
             <div className="space-y-4">
-              {studio.reviews?.length > 0 ? (
-                studio.reviews.map((review) => (
+              {reviewsLoading ? (
+                <div className="flex justify-center py-12">
+                  <Loading />
+                </div>
+              ) : reviews.length > 0 ? (
+                reviews.map((review) => (
                   <ReviewCard key={review.id} review={review} />
                 ))
               ) : (

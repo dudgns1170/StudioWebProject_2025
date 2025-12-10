@@ -21,6 +21,7 @@ public class StudioDetailResponse {
     private String description;
     private String thumbnailUrl;
     private String city;
+    private String district;
     private String address;
     private String phone;
     private String operatingHours;
@@ -42,6 +43,7 @@ public class StudioDetailResponse {
                 .description(profile.getDescription())
                 .thumbnailUrl(profile.getThumbnailUrl())
                 .city(profile.getCity())
+                .district(profile.getDistrict())
                 .address(profile.getAddress())
                 .phone(studio.getPhone())
                 .operatingHours(profile.getOperatingHours())

@@ -17,6 +17,8 @@ public class ReservationCreateRequest {
     @NotNull(message = "희망 날짜는 필수입니다")
     private LocalDate preferredDate;
 
+    private String preferredTime;  // 희망 시간대 (오전, 오후 등)
+
     @NotNull(message = "촬영 종류는 필수입니다")
     private StudioProfile.ShootingType shootingType;
 

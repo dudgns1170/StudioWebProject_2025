@@ -21,8 +21,10 @@ public class StudioProfileRequest {
     @NotBlank(message = "주소는 필수입니다")
     private String address;
 
-    @NotBlank(message = "지역(시/구)은 필수입니다")
+    @NotBlank(message = "지역(시)은 필수입니다")
     private String city;
+
+    private String district;  // 구/동 (팔달구, 분당구 등)
 
     private String description;
 

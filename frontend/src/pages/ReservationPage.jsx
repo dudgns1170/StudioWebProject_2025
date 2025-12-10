@@ -34,7 +34,6 @@ function ReservationPage() {
       <div className="bg-white rounded-xl shadow-md p-6">
         <ReservationForm
           studioId={studioId}
-          priceInfo={studio.priceInfo}
           onSuccess={handleSuccess}
         />
       </div>

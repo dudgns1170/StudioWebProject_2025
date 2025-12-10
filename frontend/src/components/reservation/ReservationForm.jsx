@@ -1,29 +1,42 @@
 import { useForm } from 'react-hook-form'
+import { format } from 'date-fns'
+import ko from 'date-fns/locale/ko'
 import { useCreateReservation } from '../../hooks/useReservation'
 import Button from '../common/Button'
-import Input from '../common/Input'
 import DatePicker from './DatePicker'
+import { SHOOTING_TYPES } from '../../utils/constants'
 
-function ReservationForm({ studioId, priceInfo, onSuccess }) {
+function ReservationForm({ studioId, onSuccess }) {
   const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm()
   const createReservation = useCreateReservation()
 
   const selectedDate = watch('date')
-  const selectedTime = watch('time')
-  const selectedPackage = watch('packageId')
 
   const onSubmit = (data) => {
-    createReservation.mutate(
-      {
-        studioId,
-        ...data,
+    if (!selectedDate) {
+      alert('예약 날짜를 선택해주세요.')
+      return
+    }
+
+    // 백엔드 API 형식에 맞게 데이터 변환 (yyyy-MM-dd)
+    const reservationData = {
+      studioId: Number(studioId),
+      preferredDate: format(selectedDate, 'yyyy-MM-dd'),
+      preferredTime: data.time,
+      shootingType: data.shootingType,
+      options: null,
+      message: data.message || null,
+    }
+
+    createReservation.mutate(reservationData, {
+      onSuccess: () => {
+        alert('예약 요청이 완료되었습니다!')
+        onSuccess?.()
       },
-      {
-        onSuccess: () => {
-          onSuccess?.()
-        },
-      }
-    )
+      onError: (error) => {
+        alert(error.response?.data?.message || '예약 요청에 실패했습니다.')
+      },
+    })
   }
 
   return (
@@ -31,85 +44,55 @@ function ReservationForm({ studioId, priceInfo, onSuccess }) {
       {/* Date Selection */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          예약 날짜
+          예약 날짜 {selectedDate && (
+            <span className="text-primary-600 font-normal">
+              - {format(selectedDate, 'yyyy년 M월 d일 (EEEE)', { locale: ko })}
+            </span>
+          )}
         </label>
         <DatePicker
           selected={selectedDate}
           onChange={(date) => setValue('date', date)}
         />
-        {errors.date && (
-          <p className="mt-1 text-sm text-red-500">{errors.date.message}</p>
-        )}
       </div>
 
       {/* Time Selection */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          예약 시간
+          희망 시간대
         </label>
         <select
-          {...register('time', { required: '시간을 선택해주세요' })}
+          {...register('time', { required: '시간대를 선택해주세요' })}
           className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
         >
-          <option value="">시간 선택</option>
-          <option value="09:00">09:00</option>
-          <option value="10:00">10:00</option>
-          <option value="11:00">11:00</option>
-          <option value="13:00">13:00</option>
-          <option value="14:00">14:00</option>
-          <option value="15:00">15:00</option>
-          <option value="16:00">16:00</option>
-          <option value="17:00">17:00</option>
+          <option value="">시간대 선택</option>
+          <option value="오전">오전 (09:00 ~ 12:00)</option>
+          <option value="오후">오후 (13:00 ~ 18:00)</option>
+          <option value="저녁">저녁 (18:00 ~ 21:00)</option>
         </select>
         {errors.time && (
           <p className="mt-1 text-sm text-red-500">{errors.time.message}</p>
         )}
       </div>
 
-      {/* Package Selection */}
+      {/* Shooting Type Selection */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">
-          촬영 패키지
+          촬영 종류
         </label>
-        <div className="space-y-2">
-          {priceInfo?.map((pkg) => (
-            <label
-              key={pkg.id}
-              className={`
-                flex items-center justify-between p-4 border rounded-lg cursor-pointer
-                ${selectedPackage === pkg.id ? 'border-primary-500 bg-primary-50' : 'border-gray-300'}
-              `}
-            >
-              <div className="flex items-center">
-                <input
-                  type="radio"
-                  value={pkg.id}
-                  {...register('packageId', { required: '패키지를 선택해주세요' })}
-                  className="mr-3"
-                />
-                <div>
-                  <p className="font-medium">{pkg.name}</p>
-                  <p className="text-sm text-gray-500">{pkg.description}</p>
-                </div>
-              </div>
-              <span className="font-semibold text-primary-600">
-                {pkg.amount?.toLocaleString()}원
-              </span>
-            </label>
+        <select
+          {...register('shootingType', { required: '촬영 종류를 선택해주세요' })}
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
+        >
+          <option value="">촬영 종류 선택</option>
+          {Object.entries(SHOOTING_TYPES).map(([key, label]) => (
+            <option key={key} value={key}>{label}</option>
           ))}
-        </div>
-        {errors.packageId && (
-          <p className="mt-1 text-sm text-red-500">{errors.packageId.message}</p>
+        </select>
+        {errors.shootingType && (
+          <p className="mt-1 text-sm text-red-500">{errors.shootingType.message}</p>
         )}
       </div>
-
-      {/* Contact Info */}
-      <Input
-        label="연락처"
-        placeholder="010-0000-0000"
-        {...register('phone', { required: '연락처를 입력해주세요' })}
-        error={errors.phone?.message}
-      />
 
       {/* Request Message */}
       <div>

@@ -36,6 +36,8 @@ public class Reservation extends BaseTimeEntity {
     @Column(nullable = false)
     private LocalDate preferredDate;  // 희망 날짜
 
+    private String preferredTime;  // 희망 시간대 (오전, 오후 등)
+
     @Enumerated(EnumType.STRING)
     private StudioProfile.ShootingType shootingType;  // 촬영 종류
 

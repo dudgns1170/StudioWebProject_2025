@@ -1,75 +1,114 @@
-import { Link } from 'react-router-dom'
-import { FiStar, FiMapPin } from 'react-icons/fi'
-import { formatPrice, formatRating } from '../../utils/formatters'
-import { SHOOTING_TYPES } from '../../utils/constants'
+import React from "react";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FiMapPin, FiStar, FiCamera, FiHeart } from "react-icons/fi";
+import { formatPrice } from "../../utils/formatters";
+import { SHOOTING_TYPES } from "../../constants/shootingTypes";
+import AnimatedCard from "../common/AnimatedCard";
 
-function StudioCard({ studio }) {
-  const {
-    id,
-    name,
-    thumbnailUrl,
-    city,
-    district,
-    shootingTypes,
-    minPrice,
-    rating,
-    reviewCount,
-  } = studio
+const StudioCard = ({ studio, selectedStudio }) => {
+  const shootingTypeLabels =
+    studio.shootingTypes
+      ?.map((type) => SHOOTING_TYPES.find((t) => t.value === type)?.label)
+      .filter(Boolean) || [];
+
+  const isSelected = selectedStudio?.id === studio.id;
 
   return (
-    <Link to={`/studios/${id}`} className="card group">
-      {/* Thumbnail */}
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <img
-          src={thumbnailUrl || '/placeholder-studio.jpg'}
-          alt={name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
-      </div>
+    <AnimatedCard animation="fadeUp" className="group">
+      <Link to={`/studios/${studio.id}`} id={`studio-${studio.id}`}>
+        <div
+          className={`card card-hover overflow-hidden ${
+            isSelected ? "ring-2 ring-accent-500 ring-offset-2" : ""
+          }`}
+        >
+          {/* Image Container */}
+          <div className="relative aspect-[4/3] overflow-hidden">
+            <img
+              src={studio.thumbnailUrl || "/placeholder-studio.jpg"}
+              alt={studio.name}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            />
 
-      {/* Content */}
-      <div className="p-4">
-        <h3 className="font-semibold text-lg text-gray-900 mb-1 truncate">
-          {name}
-        </h3>
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-        {/* Location */}
-        <div className="flex items-center text-gray-500 text-sm mb-2">
-          <FiMapPin className="w-4 h-4 mr-1" />
-          <span>{city}{district ? ` ${district}` : ''}</span>
-        </div>
-
-        {/* Shooting Types */}
-        <div className="flex flex-wrap gap-1 mb-3">
-          {shootingTypes?.slice(0, 3).map((type) => (
-            <span
-              key={type}
-              className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full"
+            {/* Favorite Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // Handle favorite toggle
+              }}
+              className="absolute top-3 right-3 w-10 h-10 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center text-primary-600 hover:text-accent-500 transition-all opacity-0 group-hover:opacity-100"
             >
-              {SHOOTING_TYPES[type] || type}
-            </span>
-          ))}
-          {shootingTypes?.length > 3 && (
-            <span className="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded-full">
-              +{shootingTypes.length - 3}
-            </span>
-          )}
-        </div>
+              <FiHeart className="w-5 h-5" />
+            </button>
 
-        {/* Price & Rating */}
-        <div className="flex items-center justify-between">
-          <span className="font-semibold text-primary-600">
-            {formatPrice(minPrice)}~
-          </span>
-          <div className="flex items-center text-sm">
-            <FiStar className="w-4 h-4 text-yellow-400 fill-yellow-400 mr-1" />
-            <span className="font-medium">{formatRating(rating)}</span>
-            <span className="text-gray-400 ml-1">({reviewCount})</span>
+            {/* Rating Badge */}
+            {studio.rating && (
+              <div className="absolute top-3 left-3 px-3 py-1 bg-black/60 backdrop-blur-sm rounded-full">
+                <div className="flex items-center gap-1 text-white text-sm">
+                  <FiStar className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                  <span>{studio.rating.toFixed(1)}</span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Content */}
+          <div className="p-5">
+            {/* Title */}
+            <h3 className="font-semibold text-lg text-primary-900 mb-2 group-hover:text-accent-600 transition-colors line-clamp-1">
+              {studio.name}
+            </h3>
+
+            {/* Location */}
+            <div className="flex items-center gap-1 text-primary-600 text-sm mb-3">
+              <FiMapPin className="w-4 h-4 flex-shrink-0" />
+              <span className="line-clamp-1">{studio.address}</span>
+            </div>
+
+            {/* Shooting Types */}
+            {shootingTypeLabels.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                {shootingTypeLabels.slice(0, 3).map((label, index) => (
+                  <span
+                    key={index}
+                    className="px-2 py-1 bg-primary-100 text-primary-700 text-xs rounded-lg"
+                  >
+                    {label}
+                  </span>
+                ))}
+                {shootingTypeLabels.length > 3 && (
+                  <span className="px-2 py-1 bg-primary-100 text-primary-700 text-xs rounded-lg">
+                    +{shootingTypeLabels.length - 3}
+                  </span>
+                )}
+              </div>
+            )}
+
+            {/* Price and Reviews */}
+            <div className="flex items-center justify-between pt-3 border-t border-primary-100">
+              <div>
+                <span className="text-lg font-bold text-accent-600">
+                  {formatPrice(studio.minPrice)}
+                </span>
+                <span className="text-sm text-primary-600 ml-1">부터</span>
+              </div>
+
+              {studio.reviewCount > 0 && (
+                <div className="flex items-center gap-1 text-sm text-primary-600">
+                  <FiStar className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                  <span>{studio.reviewCount}개 후기</span>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
-    </Link>
-  )
-}
+      </Link>
+    </AnimatedCard>
+  );
+};
 
-export default StudioCard
+export default StudioCard;

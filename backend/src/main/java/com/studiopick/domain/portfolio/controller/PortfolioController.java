@@ -26,7 +26,7 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 목록 조회")
     @GetMapping("/studios/{studioId}/portfolios")
     public ResponseEntity<ApiResponse<List<PortfolioResponse>>> getPortfolios(
-            @PathVariable Long studioId) {
+            @PathVariable("studioId") Long studioId) {
         List<PortfolioResponse> response = portfolioService.getPortfolios(studioId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -43,7 +43,7 @@ public class PortfolioController {
     @Operation(summary = "포트폴리오 삭제 (기업회원)")
     @DeleteMapping("/portfolios/{portfolioId}")
     public ResponseEntity<ApiResponse<Void>> deletePortfolio(
-            @PathVariable Long portfolioId,
+            @PathVariable("portfolioId") Long portfolioId,
             @AuthenticationPrincipal CustomStudioDetails studioDetails) {
         portfolioService.deletePortfolio(portfolioId, studioDetails.getStudioId());
         return ResponseEntity.ok(ApiResponse.success(null));

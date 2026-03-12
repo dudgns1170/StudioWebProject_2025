@@ -19,3 +19,7 @@ aws:
 
 jwt:
   secret: ${JWT_SECRET}
+
+# 결제 설정
+payment:
+  deposit-amount: 10000

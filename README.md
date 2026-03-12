@@ -58,18 +58,68 @@ cd backend
 백엔드 실행 후 Swagger UI 접속:
 - http://localhost:8080/swagger-ui.html
 
-## 환경 변수
+## 환경 변수 설정
+
+### Backend (.env)
+
+백엔드 루트에 `.env` 파일 생성 (`.env.example` 참고):
+
+```bash
+cd backend
+cp .env.example .env
+```
+
+**최소 필수 설정:**
+```env
+JWT_SECRET=your-secret-key-min-256-bits
+```
 
 ### Frontend (.env)
-```
-VITE_API_BASE_URL=http://localhost:8080/api
-VITE_KAKAO_MAP_KEY=your_kakao_map_key
+
+프론트엔드 루트에 `.env` 파일 생성 (`.env.example` 참고):
+
+```bash
+cd frontend
+cp .env.example .env
 ```
 
-### Backend (application.yml)
-- PostgreSQL 연결 정보
-- JWT Secret Key
-- AWS S3 설정
+**기본 설정:**
+```env
+VITE_API_BASE_URL=http://localhost:8080/api
+VITE_KAKAO_MAP_KEY=your_kakao_map_key  # 선택사항
+```
+
+## 테스트 계정
+
+애플리케이션 실행 시 자동으로 생성되는 테스트 계정:
+
+### 일반 회원
+- user1@example.com / test1234
+- user2@example.com / test1234
+
+### 기업 회원 (스튜디오)
+- studio1@example.com / test1234 (스냅스튜디오)
+- studio2@example.com / test1234 (포토라운지)
+- studio3@example.com / test1234 (프레임스튜디오)
+
+## 개발 도구
+
+- **Swagger UI**: http://localhost:8080/swagger-ui.html (API 문서)
+- **H2 Console**: http://localhost:8080/h2-console (개발용 DB)
+
+## 보안 주의사항
+
+### 개발 환경
+- H2 Console이 활성화되어 있습니다
+- 기본 JWT Secret Key 사용 중
+- CORS가 localhost:3000, localhost:5173에 열려있습니다
+
+### 운영 환경 배포 전 체크리스트
+- [ ] JWT_SECRET 환경변수로 안전한 키 설정
+- [ ] SecurityConfig에서 `/h2-console/**` 접근 제거
+- [ ] CORS 설정을 실제 프론트엔드 도메인으로 변경
+- [ ] AWS S3 자격증명을 IAM Role 또는 환경변수로 관리
+- [ ] PostgreSQL로 데이터베이스 전환 (application-prod.yml)
 
 ## Git 브랜치 전략
 

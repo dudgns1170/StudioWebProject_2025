@@ -42,7 +42,14 @@ public enum ErrorCode {
     REVIEW_ALREADY_EXISTS(HttpStatus.CONFLICT, "V002", "이미 후기를 작성했습니다"),
 
     // File
-    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F001", "파일 업로드에 실패했습니다");
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "F001", "파일 업로드에 실패했습니다"),
+
+    // Payment
+    PAYMENT_FAILED(HttpStatus.BAD_REQUEST, "P001", "결제에 실패했습니다"),
+    PAYMENT_PROCESSING_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "P002", "결제 처리 중 오류가 발생했습니다"),
+    INVALID_AMOUNT(HttpStatus.BAD_REQUEST, "P003", "결제 금액이 유효하지 않습니다"),
+    PAYMENT_NOT_PAID(HttpStatus.BAD_REQUEST, "P004", "결제되지 않은 주문입니다"),
+    PAYMENT_CANCEL_FAILED(HttpStatus.BAD_REQUEST, "P005", "결제 취소에 실패했습니다");
 
     private final HttpStatus status;
     private final String code;

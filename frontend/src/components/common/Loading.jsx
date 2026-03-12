@@ -1,33 +1,20 @@
-function Loading({ size = 'md', fullScreen = false }) {
-  const sizes = {
-    sm: 'w-6 h-6',
-    md: 'w-10 h-10',
-    lg: 'w-16 h-16',
-  }
+import React from "react";
+import LoadingSpinner from "./LoadingSpinner";
 
-  const spinner = (
-    <div
-      className={`
-        ${sizes[size]}
-        border-4 border-primary-200 border-t-primary-600
-        rounded-full animate-spin
-      `}
-    />
-  )
-
+const Loading = ({ fullScreen = false, size = "lg", text = "로딩 중..." }) => {
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 flex items-center justify-center bg-white bg-opacity-80 z-50">
-        {spinner}
+      <div className="fixed inset-0 bg-white/80 backdrop-blur-sm flex items-center justify-center z-50">
+        <LoadingSpinner size={size} text={text} />
       </div>
-    )
+    );
   }
 
   return (
-    <div className="flex items-center justify-center py-8">
-      {spinner}
+    <div className="flex items-center justify-center py-12">
+      <LoadingSpinner size={size} text={text} />
     </div>
-  )
-}
+  );
+};
 
-export default Loading
+export default Loading;

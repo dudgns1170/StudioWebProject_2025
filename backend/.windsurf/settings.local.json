@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(findstr:*)",
+      "Bash(npx vite:*)",
+      "Bash(./gradlew compileJava:*)",
+      "Bash(npm run build:*)"
+    ]
+  }
+}

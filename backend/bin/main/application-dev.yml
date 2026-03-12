@@ -14,10 +14,23 @@ spring:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
+
+  sql:
+    init:
+      mode: never # DataInitializer 사용
+
+# 개발 환경 JWT 설정 (운영환경에서는 절대 사용 금지)
+jwt:
+  secret: dev-only-secret-key-min-256-bits-do-not-use-in-production-environment-12345
 
 aws:
   s3:
-    bucket: studiopick-dev
-    region: ap-northeast-2
-    access-key: your-access-key
-    secret-key: your-secret-key
+    bucket: ${AWS_S3_BUCKET:studiopick-dev}
+    region: ${AWS_REGION:ap-northeast-2}
+    access-key: ${AWS_ACCESS_KEY:your-access-key}
+    secret-key: ${AWS_SECRET_KEY:your-secret-key}
+
+# 결제 설정 최소결제 금액 10000원
+payment:
+  deposit-amount: 10000

@@ -1,0 +1,58 @@
+{
+  "project": "solarteq-forcast-be",
+  "roles": [
+    "meta",
+    "java-spring",
+    "java-mybatis",
+    "java-security",
+    "java-test",
+    "common"
+  ],
+  "triggers": {
+    "on_file_change": true,
+    "file_patterns": [
+      "src/main/java/**/*.java",
+      "src/main/resources/**/*.yml",
+      "src/main/resources/**/*.yaml",
+      "src/test/java/**/*.java"
+    ],
+    "exclude_patterns": ["build/**", ".gradle/**", "**/*.class", "target/**"]
+  },
+  "project_detection": {
+    "files": ["build.gradle", "application.yml"],
+    "dependencies": [
+      "spring-boot-starter",
+      "mybatis-spring-boot-starter",
+      "spring-security"
+    ]
+  },
+  "overrides": {
+    "architecture": {
+      "package_root": "com.app",
+      "layers": ["controller", "service", "repository", "mapper"],
+      "tech_stack": {
+        "framework": "spring-boot",
+        "orm": "mybatis",
+        "security": "spring-security+jwt",
+        "cache": "redis"
+      }
+    },
+    "code_style": {
+      "lombok": true,
+      "stream_api": true,
+      "optional_usage": "fields_not_allowed",
+      "language": "english_names_korean_comments"
+    },
+    "security": {
+      "auth_method": "jwt",
+      "access_token_ttl": 900000,
+      "refresh_token_ttl": 604800000,
+      "refresh_token_storage": "redis"
+    },
+    "database": {
+      "type": "mysql",
+      "orm": "mybatis",
+      "naming_strategy": "snake_case"
+    }
+  }
+}

@@ -125,6 +125,14 @@ public class StudioService {
     }
 
     /**
+     * 스튜디오 ID로 조회
+     */
+    public Studio findById(Long studioId) {
+        return studioRepository.findById(studioId)
+                .orElseThrow(() -> new BusinessException(ErrorCode.STUDIO_NOT_FOUND));
+    }
+
+    /**
      * 스튜디오 프로필 수정
      */
     @Transactional

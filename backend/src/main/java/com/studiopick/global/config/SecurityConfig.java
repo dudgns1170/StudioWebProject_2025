@@ -32,10 +32,14 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         // Public endpoints
-                        .requestMatchers("/api/auth/signup/**", "/api/auth/login", "/api/auth/login/**", "/api/auth/refresh").permitAll()
+                        .requestMatchers("/api/auth/signup/**", "/api/auth/login", "/api/auth/login/**", "/api/auth/refresh", "/api/auth/me").permitAll()
+                        .requestMatchers("/api/reservations/payments/deposit/prepare").permitAll()  // 임시로 인증 제거
                         .requestMatchers(HttpMethod.GET, "/api/studios/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/portfolios/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/**").permitAll()
+                        .requestMatchers("/api/reservations/payments/webhook").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll() // TODO: 운영환경에서는 제거 필요
                         // All other requests require authentication
                         .anyRequest().authenticated())
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),

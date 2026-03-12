@@ -38,7 +38,7 @@ public class ReviewController {
     @Operation(summary = "스튜디오 후기 목록")
     @GetMapping("/studios/{studioId}/reviews")
     public ResponseEntity<ApiResponse<List<ReviewResponse>>> getStudioReviews(
-            @PathVariable Long studioId) {
+            @PathVariable("studioId") Long studioId) {
         List<ReviewResponse> response = reviewService.getStudioReviews(studioId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -54,7 +54,7 @@ public class ReviewController {
     @Operation(summary = "후기 수정")
     @PutMapping("/reviews/{reviewId}")
     public ResponseEntity<ApiResponse<ReviewResponse>> updateReview(
-            @PathVariable Long reviewId,
+            @PathVariable("reviewId") Long reviewId,
             @Valid @RequestBody ReviewCreateRequest request,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         ReviewResponse response = reviewService.updateReview(reviewId, userDetails.getUserId(), request);
@@ -64,7 +64,7 @@ public class ReviewController {
     @Operation(summary = "후기 삭제")
     @DeleteMapping("/reviews/{reviewId}")
     public ResponseEntity<ApiResponse<Void>> deleteReview(
-            @PathVariable Long reviewId,
+            @PathVariable("reviewId") Long reviewId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         reviewService.deleteReview(reviewId, userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success(null));

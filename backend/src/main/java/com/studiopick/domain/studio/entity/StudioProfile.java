@@ -1,5 +1,6 @@
 package com.studiopick.domain.studio.entity;
 
+import com.studiopick.domain.location.Location;
 import com.studiopick.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -28,6 +29,10 @@ public class StudioProfile extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studio_id", nullable = false)
     private Studio studio;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
 
     @Column(nullable = false)
     private String name;  // 상호명 (고객에게 보여줄 이름)
@@ -89,6 +94,10 @@ public class StudioProfile extends BaseTimeEntity {
         this.minPrice = minPrice;
         this.maxPrice = maxPrice;
         this.operatingHours = operatingHours;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void updateLocation(BigDecimal latitude, BigDecimal longitude) {

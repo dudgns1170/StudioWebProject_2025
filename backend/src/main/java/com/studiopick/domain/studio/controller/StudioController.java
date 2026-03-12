@@ -41,7 +41,7 @@ public class StudioController {
     @Operation(summary = "스튜디오 상세 조회")
     @GetMapping("/studios/{profileId}")
     public ResponseEntity<ApiResponse<StudioDetailResponse>> getStudio(
-            @PathVariable Long profileId) {
+            @PathVariable("profileId") Long profileId) {
         StudioDetailResponse response = studioService.getStudioByProfileId(profileId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }

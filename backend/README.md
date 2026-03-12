@@ -1,6 +1,6 @@
 # StudioPick Backend
 
-Spring Boot 기반 스튜디오 예약 플랫폼 백엔드 API 서버입니다.
+스튜디오 예약 플랫폼 백엔드 API (Spring Boot 3 + JWT + H2/PostgreSQL) 서버입니다.
 
 ## 기술 스택
 
@@ -24,13 +24,43 @@ Spring Boot 기반 스튜디오 예약 플랫폼 백엔드 API 서버입니다.
 gradlew.bat bootRun
 ```
 
-### 빌드
+### 환경 설정
+
+### 1. 환경변수 파일 생성
+
+프로젝트 루트에 `.env` 파일을 생성하세요 (`.env.example` 참고):
+
+```bash
+cp .env.example .env
+```
+
+### 2. JWT Secret Key 설정 (필수)
+
+개발 환경에서는 기본값으로 작동하지만, **운영 환경에서는 반드시 변경**해야 합니다:
+
+```bash
+# .env 파일에 추가
+JWT_SECRET=your-very-secure-secret-key-at-least-256-bits-long
+```
+
+### 3. AWS S3 설정 (선택)
+
+파일 업로드 기능을 사용하려면 AWS S3 자격증명을 설정하세요:
+
+```bash
+AWS_S3_BUCKET=your-bucket-name
+AWS_REGION=ap-northeast-2
+AWS_ACCESS_KEY=your-access-key
+AWS_SECRET_KEY=your-secret-key
+```
+
+## 빌드
 
 ```bash
 ./gradlew build
 ```
 
-### 테스트
+## 테스트
 
 ```bash
 ./gradlew test

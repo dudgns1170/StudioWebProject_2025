@@ -52,7 +52,7 @@ public class ReservationController {
     @Operation(summary = "예약 상세")
     @GetMapping("/{reservationId}")
     public ResponseEntity<ApiResponse<ReservationResponse>> getReservation(
-            @PathVariable Long reservationId) {
+            @PathVariable("reservationId") Long reservationId) {
         ReservationResponse response = reservationService.getReservation(reservationId);
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -60,7 +60,7 @@ public class ReservationController {
     @Operation(summary = "예약 승인 (기업회원)")
     @PutMapping("/{reservationId}/approve")
     public ResponseEntity<ApiResponse<ReservationResponse>> approveReservation(
-            @PathVariable Long reservationId,
+            @PathVariable("reservationId") Long reservationId,
             @AuthenticationPrincipal CustomStudioDetails studioDetails) {
         ReservationResponse response = reservationService.approveReservation(reservationId, studioDetails.getStudioId());
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -69,7 +69,7 @@ public class ReservationController {
     @Operation(summary = "예약 거절 (기업회원)")
     @PutMapping("/{reservationId}/reject")
     public ResponseEntity<ApiResponse<ReservationResponse>> rejectReservation(
-            @PathVariable Long reservationId,
+            @PathVariable("reservationId") Long reservationId,
             @AuthenticationPrincipal CustomStudioDetails studioDetails) {
         ReservationResponse response = reservationService.rejectReservation(reservationId, studioDetails.getStudioId());
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -78,7 +78,7 @@ public class ReservationController {
     @Operation(summary = "예약 완료 (기업회원)")
     @PutMapping("/{reservationId}/complete")
     public ResponseEntity<ApiResponse<ReservationResponse>> completeReservation(
-            @PathVariable Long reservationId,
+            @PathVariable("reservationId") Long reservationId,
             @AuthenticationPrincipal CustomStudioDetails studioDetails) {
         ReservationResponse response = reservationService.completeReservation(reservationId, studioDetails.getStudioId());
         return ResponseEntity.ok(ApiResponse.success(response));
@@ -87,7 +87,7 @@ public class ReservationController {
     @Operation(summary = "예약 취소 (일반회원)")
     @DeleteMapping("/{reservationId}")
     public ResponseEntity<ApiResponse<Void>> cancelReservation(
-            @PathVariable Long reservationId,
+            @PathVariable("reservationId") Long reservationId,
             @AuthenticationPrincipal CustomUserDetails userDetails) {
         reservationService.cancelReservation(reservationId, userDetails.getUserId());
         return ResponseEntity.ok(ApiResponse.success(null));
